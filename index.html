@@ -1,18 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Virtual Try-On</title>
+    <title>Sanal Deneme Odası</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
+            colors: {
+              "primary": "#df2080",
+              "background-light": "#f8f6f7",
+              "background-dark": "#211119",
+              "text-light": "#1b0e14",
+              "text-dark": "#f8f6f7",
+              "subtle-light": "#e6d1db",
+              "subtle-dark": "#503e47"
+            },
             fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              serif: ['Instrument Serif', 'serif'],
+              sans: ['Manrope', 'sans-serif'],
+              serif: ['Manrope', 'serif'], // Using Manrope for serif as well for consistency
+            },
+            borderRadius: { 
+              "DEFAULT": "0.5rem", 
+              "lg": "0.75rem", 
+              "xl": "1rem", 
+              "full": "9999px" 
             },
           }
         }
@@ -37,9 +52,8 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://esm.sh/react-image-crop@^11.0.6/dist/ReactCrop.css" />
-    <link rel="stylesheet" href="/index.css" />
   </head>
   <body>
     <div id="root"></div>

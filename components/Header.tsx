@@ -3,16 +3,20 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 import React from 'react';
-import { ShirtIcon } from './icons';
+import { ProfileIcon } from './icons';
 
 const Header: React.FC = () => {
   return (
-    <header className="w-full py-5 px-4 md:px-8 bg-white sticky top-0 z-40">
-      <div className="flex items-center gap-3">
-          <ShirtIcon className="w-6 h-6 text-gray-700" />
-          <h1 className="text-2xl font-serif tracking-widest text-gray-800">
-            Virtual Try-On
+    <header className="sticky top-0 bg-background-light/80 backdrop-blur-sm z-30 border-b border-subtle-light">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <h1 className="text-xl font-bold tracking-tight text-text-light">
+            Sanal Deneme Odası
           </h1>
+          <button className="flex items-center justify-center w-10 h-10 rounded-full text-text-light hover:bg-primary/10 active:scale-95 transition-transform">
+            <ProfileIcon className="w-6 h-6" />
+          </button>
+        </div>
       </div>
     </header>
   );

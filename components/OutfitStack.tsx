@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { OutfitLayer } from '../types';
-import { Trash2Icon } from './icons';
+import { TrashIcon } from './icons';
 
 interface OutfitStackProps {
   outfitHistory: OutfitLayer[];
@@ -15,39 +15,42 @@ interface OutfitStackProps {
 const OutfitStack: React.FC<OutfitStackProps> = ({ outfitHistory, onRemoveLastGarment }) => {
   return (
     <div className="flex flex-col">
-      <h2 className="text-xl font-serif tracking-wider text-gray-800 border-b border-gray-400/50 pb-2 mb-3">Outfit Stack</h2>
-      <div className="space-y-2">
+      <h2 className="text-lg font-bold text-text-light mb-4">Kombin Katmanları</h2>
+      <ul className="divide-y divide-subtle-light">
         {outfitHistory.map((layer, index) => (
-          <div
+          <li
             key={layer.garment?.id || 'base'}
-            className="flex items-center justify-between bg-white/50 p-2 rounded-lg animate-fade-in border border-gray-200/80"
+            className="flex items-center justify-between py-4"
           >
-            <div className="flex items-center overflow-hidden">
-                <span className="flex-shrink-0 flex items-center justify-center w-6 h-6 mr-3 text-xs font-bold text-gray-600 bg-gray-200 rounded-full">
-                  {index + 1}
-                </span>
-                {layer.garment && (
-                    <img src={layer.garment.url} alt={layer.garment.name} className="flex-shrink-0 w-12 h-12 object-cover rounded-md mr-3" />
-                )}
-                <span className="font-semibold text-gray-800 truncate" title={layer.garment?.name}>
-                  {layer.garment ? layer.garment.name : 'Base Model'}
-                </span>
+            <div className="flex items-center gap-4">
+              {layer.garment && (
+                  <img src={layer.garment.url} alt={layer.garment.name} className="w-12 h-12 object-cover rounded-lg bg-center" />
+              )}
+               <span className="font-semibold text-text-light">
+                {layer.garment ? layer.garment.name : 'Ana Model'}
+              </span>
             </div>
-            {index > 0 && index === outfitHistory.length - 1 && (
-               <button
-                onClick={onRemoveLastGarment}
-                className="flex-shrink-0 text-gray-500 hover:text-red-600 transition-colors p-2 rounded-md hover:bg-red-50"
-                aria-label={`Remove ${layer.garment?.name}`}
-              >
-                <Trash2Icon className="w-5 h-5" />
-              </button>
-            )}
-          </div>
+
+            <div className="flex items-center gap-4">
+                <span className="text-sm text-text-light/70">
+                    Katman {index + 1}
+                </span>
+                {index > 0 && index === outfitHistory.length - 1 && (
+                  <button
+                    onClick={onRemoveLastGarment}
+                    className="p-2 rounded-full text-text-light/70 hover:bg-primary/10 hover:text-primary active:scale-90 transition-all"
+                    aria-label={`'${layer.garment?.name}' ürününü kaldır`}
+                  >
+                    <TrashIcon className="w-5 h-5" />
+                  </button>
+                )}
+            </div>
+          </li>
         ))}
         {outfitHistory.length === 1 && (
-            <p className="text-center text-sm text-gray-500 pt-4">Your stacked items will appear here. Select an item from the wardrobe below.</p>
+            <p className="text-center text-sm text-gray-500 pt-8">Kombininiz burada görünecek. Başlamak için Gardırop sekmesinden bir ürün seçin.</p>
         )}
-      </div>
+      </ul>
     </div>
   );
 };

@@ -23,7 +23,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ onModelFinalized }) => {
 
   const handleFileSelect = useCallback(async (file: File) => {
     if (!file.type.startsWith('image/')) {
-        setError('Please select an image file.');
+        setError('Lütfen bir resim dosyası seçin.');
         return;
     }
 
@@ -38,7 +38,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ onModelFinalized }) => {
             const result = await generateModelImage(file);
             setGeneratedModelUrl(result);
         } catch (err) {
-            setError(getFriendlyErrorMessage(err, 'Failed to create model'));
+            setError(getFriendlyErrorMessage(err, 'Model oluşturulamadı'));
             setUserImageUrl(null);
         } finally {
             setIsGenerating(false);
@@ -61,85 +61,78 @@ const StartScreen: React.FC<StartScreenProps> = ({ onModelFinalized }) => {
   };
 
   const screenVariants = {
-    initial: { opacity: 0, x: -20 },
-    animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 20 },
+    initial: { opacity: 0, scale: 0.98 },
+    animate: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.98 },
   };
 
   return (
+    <div className="w-full max-w-md mx-auto h-full flex flex-col justify-center text-center">
     <AnimatePresence mode="wait">
       {!userImageUrl ? (
         <motion.div
           key="uploader"
-          className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12"
           variants={screenVariants}
           initial="initial"
           animate="animate"
           exit="exit"
           transition={{ duration: 0.4, ease: "easeInOut" }}
         >
-          <div className="lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
-            <div className="max-w-lg">
-              <h1 className="text-5xl md:text-6xl font-serif font-bold text-gray-900 leading-tight">
-                Create Your Model for Any Look.
-              </h1>
-              <p className="mt-4 text-lg text-gray-600">
-                Ever wondered how an outfit would look on you? Stop guessing. Upload a photo and see for yourself. Our AI creates your personal model, ready to try on anything.
-              </p>
-              <hr className="my-8 border-gray-200" />
-              <div className="flex flex-col items-center lg:items-start w-full gap-3">
-                <label htmlFor="image-upload-start" className="w-full relative flex items-center justify-center px-8 py-3 text-base font-semibold text-white bg-gray-900 rounded-md cursor-pointer group hover:bg-gray-700 transition-colors">
-                  <UploadCloudIcon className="w-5 h-5 mr-3" />
-                  Upload Photo
-                </label>
-                <input id="image-upload-start" type="file" className="hidden" accept="image/png, image/jpeg, image/webp, image/avif, image/heic, image/heif" onChange={handleFileChange} />
-                <p className="text-gray-500 text-sm">Select a clear, full-body photo. Face-only photos also work, but full-body is preferred for best results.</p>
-                <p className="text-gray-500 text-xs mt-1">By uploading, you agree not to create harmful, explicit, or unlawful content. This service is for creative and responsible use only.</p>
-                {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-              </div>
-            </div>
-          </div>
-          <div className="w-full lg:w-1/2 flex flex-col items-center justify-center">
-            <Compare
-              firstImage="https://storage.googleapis.com/gemini-95-icons/asr-tryon.jpg"
-              secondImage="https://storage.googleapis.com/gemini-95-icons/asr-tryon-model.png"
-              slideMode="drag"
-              className="w-full max-w-sm aspect-[2/3] rounded-2xl bg-gray-200"
-            />
+          <h1 className="text-4xl font-bold text-text-light leading-tight">
+            Kişisel Deneme Odanız
+          </h1>
+          <p className="mt-2 text-zinc-600">
+            Bir fotoğrafınızı yükleyin, yapay zekamız kıyafetleri sanal olarak denemeniz için dijital bir model oluştursun.
+          </p>
+          <div className="mt-8">
+            <label htmlFor="image-upload-start" className="w-full max-w-sm px-8 py-3 text-lg font-bold text-white rounded-full bg-primary cursor-pointer inline-block transition-transform active:scale-95">
+              Fotoğraf Yükle
+            </label>
+            <input id="image-upload-start" type="file" className="hidden" accept="image/png, image/jpeg, image/webp, image/avif, image/heic, image/heif" onChange={handleFileChange} />
+            <p className="mt-3 text-sm text-zinc-500">En iyi sonuçlar için net, tam vücut bir fotoğraf kullanın.</p>
+            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
           </div>
         </motion.div>
       ) : (
         <motion.div
           key="compare"
-          className="w-full max-w-6xl mx-auto h-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12"
+          className="w-full flex flex-col items-center justify-center"
           variants={screenVariants}
           initial="initial"
           animate="animate"
           exit="exit"
           transition={{ duration: 0.4, ease: "easeInOut" }}
         >
-          <div className="md:w-1/2 flex-shrink-0 flex flex-col items-center md:items-start">
-            <div className="text-center md:text-left">
-              <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 leading-tight">
-                The New You
+            <div className="text-center">
+              <h1 className="text-4xl font-bold text-gray-900 leading-tight">
+                Yeni Sen
               </h1>
               <p className="mt-2 text-md text-gray-600">
-                Drag the slider to see your transformation.
+                Dönüşümünü görmek için kaydırıcıyı sürükle.
               </p>
             </div>
             
+            <div className="my-6">
+                <Compare
+                    firstImage={userImageUrl}
+                    secondImage={generatedModelUrl ?? userImageUrl}
+                    slideMode="drag"
+                    className="w-[280px] h-[420px] sm:w-[320px] sm:h-[480px] rounded-xl bg-gray-200 shadow-lg"
+                />
+            </div>
+            
             {isGenerating && (
-              <div className="flex items-center gap-3 text-lg text-gray-700 font-serif mt-6">
+              <div className="flex items-center gap-3 text-lg text-gray-700 mt-6">
                 <Spinner />
-                <span>Generating your model...</span>
+                <span>Modelin oluşturuluyor...</span>
               </div>
             )}
 
             {error && 
-              <div className="text-center md:text-left text-red-600 max-w-md mt-6">
-                <p className="font-semibold">Generation Failed</p>
+              <div className="text-center text-red-600 max-w-md mt-6">
+                <p className="font-semibold">Oluşturma Başarısız</p>
                 <p className="text-sm mb-4">{error}</p>
-                <button onClick={reset} className="text-sm font-semibold text-gray-700 hover:underline">Try Again</button>
+                <button onClick={reset} className="text-sm font-semibold text-gray-700 hover:underline">Tekrar Dene</button>
               </div>
             }
             
@@ -150,39 +143,27 @@ const StartScreen: React.FC<StartScreenProps> = ({ onModelFinalized }) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.5 }}
-                  className="flex flex-col sm:flex-row items-center gap-4 mt-8"
+                  className="flex flex-col w-full max-w-xs gap-3 mt-4"
                 >
                   <button 
-                    onClick={reset}
-                    className="w-full sm:w-auto px-6 py-3 text-base font-semibold text-gray-700 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 transition-colors"
+                    onClick={() => onModelFinalized(generatedModelUrl)}
+                    className="w-full px-8 py-3 text-base font-semibold text-white bg-primary rounded-full cursor-pointer hover:opacity-90 transition-opacity"
                   >
-                    Use Different Photo
+                    Stil Oluşturmaya Başla &rarr;
                   </button>
                   <button 
-                    onClick={() => onModelFinalized(generatedModelUrl)}
-                    className="w-full sm:w-auto relative inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-white bg-gray-900 rounded-md cursor-pointer group hover:bg-gray-700 transition-colors"
+                    onClick={reset}
+                    className="w-full px-6 py-3 text-base font-semibold text-gray-700 bg-gray-200 rounded-full cursor-pointer hover:bg-gray-300 transition-colors"
                   >
-                    Proceed to Styling &rarr;
+                    Farklı Fotoğraf Kullan
                   </button>
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
-          <div className="md:w-1/2 w-full flex items-center justify-center">
-            <div 
-              className={`relative rounded-[1.25rem] transition-all duration-700 ease-in-out ${isGenerating ? 'border border-gray-300 animate-pulse' : 'border border-transparent'}`}
-            >
-              <Compare
-                firstImage={userImageUrl}
-                secondImage={generatedModelUrl ?? userImageUrl}
-                slideMode="drag"
-                className="w-[280px] h-[420px] sm:w-[320px] sm:h-[480px] lg:w-[400px] lg:h-[600px] rounded-2xl bg-gray-200"
-              />
-            </div>
-          </div>
         </motion.div>
       )}
     </AnimatePresence>
+    </div>
   );
 };
 

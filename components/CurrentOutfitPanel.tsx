@@ -5,7 +5,8 @@
 
 import React from 'react';
 import { OutfitLayer } from '../types';
-import { Trash2Icon, PlusIcon } from './icons';
+// FIX: Replace non-existent Trash2Icon with TrashIcon and import new PlusIcon.
+import { TrashIcon, PlusIcon } from './icons';
 
 interface OutfitStackProps {
   outfitHistory: OutfitLayer[];
@@ -40,7 +41,8 @@ const OutfitStack: React.FC<OutfitStackProps> = ({ outfitHistory, onRemoveLastGa
                 className="flex-shrink-0 text-gray-500 hover:text-red-600 transition-colors p-2 rounded-md hover:bg-red-50"
                 aria-label={`Remove ${layer.garment?.name}`}
               >
-                <Trash2Icon className="w-5 h-5" />
+                {/* FIX: Use TrashIcon instead of non-existent Trash2Icon. */}
+                <TrashIcon className="w-5 h-5" />
               </button>
             )}
           </div>
